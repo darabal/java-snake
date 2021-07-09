@@ -28,8 +28,8 @@ public class Snake {
         body.add(temp);
 
         direction = "NONE";
-        for (Rectangle r: this.body) {
-            System.out.println("snake: "+r.x+", "+r.y);
+        for (Rectangle r : this.body) {
+            System.out.println("snake: " + r.x + ", " + r.y);
         }
     }
 

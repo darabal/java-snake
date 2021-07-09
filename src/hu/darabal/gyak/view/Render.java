@@ -10,8 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Render extends JPanel implements ActionListener {
-    private Timer timerCurrent = new Timer(100, this);
-    ;
+    private Timer timerCurrent = new Timer(200, this);
 
     private static boolean b;
 
@@ -38,10 +37,19 @@ public class Render extends JPanel implements ActionListener {
         b = true;
     }
 
-    public void setRefreshRate(Timer timer) {
-        timerCurrent.stop();
-        timerCurrent = timer;
-        timerCurrent.start();
+    public void setRefreshRate(boolean timeChange) {
+        if (timeChange) {
+            if (game.getSpeed() == 0) {
+                timerCurrent.stop();
+                timerCurrent = new Timer(100, this);
+                timerCurrent.start();
+            } else if (game.getSpeed() == 2) {
+                timerCurrent.stop();
+                timerCurrent = new Timer(300, this);
+                timerCurrent.start();
+            }
+            game.setSpeedChanged(false);
+        }
     }
 
     public void paintComponent(java.awt.Graphics g) {
@@ -55,15 +63,15 @@ public class Render extends JPanel implements ActionListener {
 
 
         g2d.setColor(Color.WHITE);
-        g2d.fillRect(5, 40, width, height);
+        g2d.fillRect(10, 40, width, height);
 
         g2d.setColor(Color.BLACK);
-        g2d.drawLine(5, 5, width + 5, 5);
-        g2d.drawLine(width + 5, 5, width + 5, height + 40);
-        g2d.drawLine(width + 5, height + 40, 5, height + 40);
-        g2d.drawLine(5, height + 40, 5, 5);
+        g2d.drawLine(10, 10, width + 10, 10);
+        g2d.drawLine(width + 10, 10, width + 10, height + 40);
+        g2d.drawLine(width + 10, height + 40, 10, height + 40);
+        g2d.drawLine(10, height + 40, 10, 10);
 
-        g2d.drawLine(5, 40, width + 5, 40);
+        g2d.drawLine(10, 40, width + 10, 40);
         //state handler / render
         if (game.getGameState().equals("START")) {
 
@@ -89,11 +97,6 @@ public class Render extends JPanel implements ActionListener {
 
         } else if (game.getGameState().equals("SETUP")) {
 
-            if (b) {
-                g2d.drawString("-Press any key-", width / 2 - 42, 220);
-            }
-            b = !b;
-
             g2d.drawString("Select the SPEED!", midX - 33, midY - 55);
             g2d.drawString("slow", midX, midY - 25);
             g2d.drawString("normal", midX, midY);
@@ -118,6 +121,8 @@ public class Render extends JPanel implements ActionListener {
             }
 
         } else if (game.getGameState().equals("GAME")) {
+            setRefreshRate(game.isSpeedChanged());
+
             g2d.setColor(Color.MAGENTA);
             g2d.fillRect(fruit.getX(), fruit.getY(), Game.dimension, Game.dimension);
 
@@ -126,10 +131,10 @@ public class Render extends JPanel implements ActionListener {
                 g2d.fill(r);
             }
         } else if (game.getGameState().equals("END")) {
-            g2d.drawString("Your score: " + snake.getBody().size(), 10, 55);
+            g2d.drawString("Your score: " + snake.getBody().size(), 15, 55);
 
         } else {
-            g2d.drawString("ERROR", 10, 55);
+            g2d.drawString("ERROR", 15, 55);
         }
 
 
@@ -140,7 +145,6 @@ public class Render extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         repaint();
         game.update();
-        System.out.println(snake.getDirection());
     }
 }
 

@@ -17,13 +17,15 @@ public class Game implements KeyListener {
     private String gameState;   // START, SETUP, GAME, END
     private int speed;  // 0=fast 1=normal 2=slow
 
+    private boolean speedChanged = false;
+
     public static final int width = 30;
     public static final int height = 30;
     public static final int dimension = 10;
 
 
     public Game() {
-        gameState="START";
+        gameState = "START";
         speed = 1;
         snake = new Snake();
         fruit = new Fruit(snake);
@@ -31,33 +33,34 @@ public class Game implements KeyListener {
 
 
         Render r = new Render(this);
-        r.setRefreshRate(new Timer(200,r));
 
         window.add(r);
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        window.setSize(width*dimension+25,height*dimension+85);
+        window.setSize(width * dimension + 35, height * dimension + 85);
         window.setLocationRelativeTo(null);
         window.setVisible(true);
 
     }
 
     public void update() {
-        if (checkWallCollision() || checkBodyCollision()){
+        if (checkWallCollision() || checkBodyCollision()) {
             gameState = "END";
 
-        } else if (checkFoodCollision()){
+        } else if (checkFoodCollision()) {
             snake.grow();
             fruit.RandomSpawn(snake);
         } else {
+            System.out.println("moving to " + snake.getDirection());
             snake.move();
+            System.out.println("snake: " + snake.getHeadX() + ", " + snake.getHeadY());
         }
     }
 
 
     private boolean checkWallCollision() {
-        if (snake.getHeadX() < 5 || snake.getHeadX() >= Game.width * Game.dimension+40 ||
-                snake.getHeadY() < 5 || snake.getHeadY() >= Game.height * Game.dimension+40) {
-            System.out.println("Wall hit");
+        if (snake.getHeadX() < 10 || snake.getHeadX() > Game.width * Game.dimension ||
+                snake.getHeadY() < 40 || snake.getHeadY() > Game.height * Game.dimension + 30) {
+            System.out.println("Wall hit at (" + snake.getHeadX() + ", " + snake.getHeadY() + ") y>290 x<10");
             return true;
         }
         return false;
@@ -65,13 +68,11 @@ public class Game implements KeyListener {
 
     private boolean checkBodyCollision() {
 
-        for (int i=1; i<snake.getBody().size();i++){
+        for (int i = 1; i < snake.getBody().size(); i++) {
             if (snake.getBody().get(0).x == snake.getBody().get(i).x &&
-                    snake.getBody().get(0).y == snake.getBody().get(i).y ) {
-                System.out.println("Body hit: "+snake.getHeadX()+" and "+snake.getBody().get(i).x);
-                System.out.println("          "+snake.getHeadY()+" and "+snake.getBody().get(i).y);
-
-
+                    snake.getBody().get(0).y == snake.getBody().get(i).y) {
+                System.out.println("Body hit: (" + snake.getHeadX() + ", " + snake.getHeadY() +
+                        ") with (" + snake.getBody().get(i).x + ", " + snake.getBody().get(i).y + ")");
                 return true;
             }
         }
@@ -88,7 +89,6 @@ public class Game implements KeyListener {
     }
 
 
-
     @Override
     public void keyTyped(KeyEvent e) {
 
@@ -98,7 +98,7 @@ public class Game implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int keycode = e.getKeyCode();
 
-        if (gameState.equals("GAME")){
+        if (gameState.equals("GAME")) {
             if (keycode == KeyEvent.VK_UP && !snake.getDirection().equals("UP")) {
                 snake.up();
             }
@@ -113,24 +113,26 @@ public class Game implements KeyListener {
             }
 
 
-
         } else if (gameState.equals("START") || gameState.equals("END")) {
-            gameState="SETUP";
+            gameState = "SETUP";
 
         } else if (gameState.equals("SETUP")) {
             if (keycode == KeyEvent.VK_UP) {
-                if (speed <2){
+                if (speed < 2) {
                     speed++;
                 }
             }
-            if (keycode == KeyEvent.VK_DOWN){
-                if (speed >0){
+            if (keycode == KeyEvent.VK_DOWN) {
+                if (speed > 0) {
                     speed--;
                 }
             }
 
-            if (keycode == KeyEvent.VK_ENTER){
-                gameState="GAME";
+            if (keycode == KeyEvent.VK_ENTER ||
+                    keycode == KeyEvent.VK_SPACE) {
+
+                setSpeedChanged(true);
+                gameState = "GAME";
             }
         }
         //System.out.println(keycode);
@@ -180,5 +182,13 @@ public class Game implements KeyListener {
 
     public void setSpeed(int speed) {
         this.speed = speed;
+    }
+
+    public boolean isSpeedChanged() {
+        return speedChanged;
+    }
+
+    public void setSpeedChanged(boolean speedChanged) {
+        this.speedChanged = speedChanged;
     }
 }

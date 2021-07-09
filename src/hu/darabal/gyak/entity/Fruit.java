@@ -17,16 +17,17 @@ public class Fruit {
         boolean onSnake = false;
 
         do {
-            x = (int)(Math.random() * Game.width+0.5)*Game.dimension;
-            y = (int)(Math.random() * Game.height+4)*Game.dimension;
+            x = (int) (Math.random() * Game.width + 1) * Game.dimension;
+            y = (int) (Math.random() * Game.height + 4) * Game.dimension;
 
-            System.out.println("fruit ciklus");
-            for(Rectangle r: snake.getBody()) {
-                if (r.x == x && r.y == y){
+            for (Rectangle r : snake.getBody()) {
+                if (r.x == x && r.y == y) {
                     onSnake = true;
                 }
             }
         } while (onSnake);
+
+        System.out.println("fruit: " + x + ", " + y);
     }
 
     public int getX() {
