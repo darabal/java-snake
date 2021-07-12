@@ -41,11 +41,11 @@ public class Render extends JPanel implements ActionListener {
         if (timeChange) {
             if (game.getSpeed() == 0) {
                 timerCurrent.stop();
-                timerCurrent = new Timer(100, this);
+                timerCurrent = new Timer(100, this);    // FAST
                 timerCurrent.start();
             } else if (game.getSpeed() == 2) {
                 timerCurrent.stop();
-                timerCurrent = new Timer(300, this);
+                timerCurrent = new Timer(10, this);    // SLOW
                 timerCurrent.start();
             }
             game.setSpeedChanged(false);
@@ -55,8 +55,8 @@ public class Render extends JPanel implements ActionListener {
     public void paintComponent(java.awt.Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        int midX = width / 2 - 15;
-        int midY = height / 2;
+        int midX = 150;
+        int midY = 220;
 
         // border and background
         setBackground(Color.CYAN);
@@ -77,23 +77,23 @@ public class Render extends JPanel implements ActionListener {
 
             //snake ascii art and start screen
             if (b) {
-                g2d.drawString("-Press any key-", width / 2 - 42, 220);
+                g2d.drawString("-Press any key-", midX - 30, midY+30);
             }
             b = !b;
-            g2d.drawString("//////////////////////////////////////////////////////", midX - 70, 165);
-            g2d.drawString("SNAKE GAME", midX - 25, 180);
-            g2d.drawString("//", midX - 73, 180);
-            g2d.drawString("//", midX + 92, 180);
-            g2d.drawString("//////////////////////////////////////////////////////", midX - 77, 195);
-            g2d.drawString("  __", midX, 58);
-            g2d.drawString("{OO}", midX, 72);
-            g2d.drawString(" \\__/", midX, 84);
-            g2d.drawString("  /^/", midX, 96);
-            g2d.drawString("(  (", midX, 108);
-            g2d.drawString(" \\   \\", midX, 120);
-            g2d.drawString("   ______", midX - 18, 120);
-            g2d.drawString("  (______)", midX - 18, 132);
-            g2d.drawString("(________()Oo", midX - 18, 144);
+            g2d.drawString("//////////////////////////////////////////////////////", midX - 70, midY-25);
+            g2d.drawString("SNAKE GAME", midX - 25, midY-10);
+            g2d.drawString("//", midX - 73, midY-10);
+            g2d.drawString("//", midX + 92, midY-10);
+            g2d.drawString("//////////////////////////////////////////////////////", midX - 77, midY+5);
+            g2d.drawString("  __", midX, midY-132);
+            g2d.drawString("{OO}", midX, midY-118);
+            g2d.drawString(" \\__/", midX, midY-106);
+            g2d.drawString("  /^/", midX, midY-94);
+            g2d.drawString("(  (", midX, midY-82);
+            g2d.drawString(" \\   \\", midX, midY-70);
+            g2d.drawString("   ______", midX - 18, midY-70);
+            g2d.drawString("  (______)", midX - 18, midY-58);
+            g2d.drawString("(________()Oo", midX - 18, midY-46);
 
         } else if (game.getGameState().equals("SETUP")) {
 
@@ -130,9 +130,13 @@ public class Render extends JPanel implements ActionListener {
             for (Rectangle r : snake.getBody()) {
                 g2d.fill(r);
             }
-        } else if (game.getGameState().equals("END")) {
-            g2d.drawString("Your score: " + snake.getBody().size(), 15, 55);
 
+            g2d.setColor(Color.BLACK);
+            g2d.drawString("Your score: " + snake.getBody().size(), 15, 30);
+
+        } else if (game.getGameState().equals("END")) {
+            g2d.drawString("GAME OVER",127,170);
+            g2d.drawString("Your score: " + snake.getBody().size(), 127, 190);
         } else {
             g2d.drawString("ERROR", 15, 55);
         }

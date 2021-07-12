@@ -28,9 +28,7 @@ public class Snake {
         body.add(temp);
 
         direction = "NONE";
-        for (Rectangle r : this.body) {
-            System.out.println("snake: " + r.x + ", " + r.y);
-        }
+
     }
 
     public void move() {
@@ -76,22 +74,18 @@ public class Snake {
     // directions set
     public void up() {
         direction = "UP";
-        System.out.println("UP");
     }
 
     public void left() {
         direction = "LEFT";
-        System.out.println("LEFT");
     }
 
     public void down() {
         direction = "DOWN";
-        System.out.println("DOWN");
     }
 
     public void right() {
         direction = "RIGHT";
-        System.out.println("RIGHT");
     }
 
     // getter setters

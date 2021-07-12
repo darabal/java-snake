@@ -43,46 +43,40 @@ public class Game implements KeyListener {
     }
 
     public void update() {
-        if (checkWallCollision() || checkBodyCollision()) {
+        if (checkWallHit() || checkBodyHit()) {
             gameState = "END";
 
-        } else if (checkFoodCollision()) {
+        } else if (checkFoodHit()) {
             snake.grow();
             fruit.RandomSpawn(snake);
         } else {
-            System.out.println("moving to " + snake.getDirection());
             snake.move();
-            System.out.println("snake: " + snake.getHeadX() + ", " + snake.getHeadY());
         }
     }
 
 
-    private boolean checkWallCollision() {
+    private boolean checkWallHit() {
         if (snake.getHeadX() < 10 || snake.getHeadX() > Game.width * Game.dimension ||
                 snake.getHeadY() < 40 || snake.getHeadY() > Game.height * Game.dimension + 30) {
-            System.out.println("Wall hit at (" + snake.getHeadX() + ", " + snake.getHeadY() + ") y>290 x<10");
             return true;
         }
         return false;
     }
 
-    private boolean checkBodyCollision() {
+    private boolean checkBodyHit() {
 
         for (int i = 1; i < snake.getBody().size(); i++) {
             if (snake.getBody().get(0).x == snake.getBody().get(i).x &&
                     snake.getBody().get(0).y == snake.getBody().get(i).y) {
-                System.out.println("Body hit: (" + snake.getHeadX() + ", " + snake.getHeadY() +
-                        ") with (" + snake.getBody().get(i).x + ", " + snake.getBody().get(i).y + ")");
                 return true;
             }
         }
         return false;
     }
 
-    private boolean checkFoodCollision() {
+    private boolean checkFoodHit() {
         if (snake.getHeadX() == fruit.getX() &&
                 snake.getHeadY() == fruit.getY()) {
-            System.out.println("Food hit");
             return true;
         }
         return false;
@@ -99,10 +93,10 @@ public class Game implements KeyListener {
         int keycode = e.getKeyCode();
 
         if (gameState.equals("GAME")) {
-            if (keycode == KeyEvent.VK_UP && !snake.getDirection().equals("UP")) {
+            if (keycode == KeyEvent.VK_UP && !snake.getDirection().equals("DOWN")) {
                 snake.up();
             }
-            if (keycode == KeyEvent.VK_DOWN && !snake.getDirection().equals("DOWN")) {
+            if (keycode == KeyEvent.VK_DOWN && !snake.getDirection().equals("UP")) {
                 snake.down();
             }
             if (keycode == KeyEvent.VK_LEFT && !snake.getDirection().equals("RIGHT")) {

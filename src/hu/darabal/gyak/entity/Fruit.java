@@ -19,15 +19,16 @@ public class Fruit {
         do {
             x = (int) (Math.random() * Game.width + 1) * Game.dimension;
             y = (int) (Math.random() * Game.height + 4) * Game.dimension;
-
+            onSnake = false;
             for (Rectangle r : snake.getBody()) {
                 if (r.x == x && r.y == y) {
                     onSnake = true;
+                    //System.out.println("FRUIT ON SNAKE");
                 }
             }
         } while (onSnake);
 
-        System.out.println("fruit: " + x + ", " + y);
+        //System.out.println("fruit: " + x + ", " + y);
     }
 
     public int getX() {
