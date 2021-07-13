@@ -60,8 +60,6 @@ public class Render extends JPanel implements ActionListener {
 
         // border and background
         setBackground(Color.CYAN);
-
-
         g2d.setColor(Color.WHITE);
         g2d.fillRect(10, 40, width, height);
 
@@ -72,6 +70,7 @@ public class Render extends JPanel implements ActionListener {
         g2d.drawLine(10, height + 40, 10, 10);
 
         g2d.drawLine(10, 40, width + 10, 40);
+
         //state handler / render
         if (game.getGameState().equals("START")) {
 
@@ -123,12 +122,19 @@ public class Render extends JPanel implements ActionListener {
         } else if (game.getGameState().equals("GAME")) {
             setRefreshRate(game.isSpeedChanged());
 
+            // renders fruit
             g2d.setColor(Color.MAGENTA);
             g2d.fillRect(fruit.getX(), fruit.getY(), Game.dimension, Game.dimension);
 
-            g2d.setColor(Color.BLUE);
-            for (Rectangle r : snake.getBody()) {
-                g2d.fill(r);
+            // renders snake
+            g2d.setColor(Color.ORANGE);
+            for (int i=0; i<snake.getBody().size(); i++){
+                if (i==0){
+                    g2d.fill(snake.getBody().get(0));
+                    g2d.setColor(Color.GREEN);
+                } else {
+                    g2d.fill(snake.getBody().get(i));
+                }
             }
 
             g2d.setColor(Color.BLACK);
@@ -141,9 +147,7 @@ public class Render extends JPanel implements ActionListener {
             g2d.drawString("ERROR", 15, 55);
         }
 
-
     }
-
 
     @Override
     public void actionPerformed(ActionEvent e) {
