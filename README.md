@@ -1,2 +1,7 @@
-# java-snake
-Snake játék Java-ban
+# Snake játék
+
+Egyszerű snake játék javaban írva
+
+![gameplay](gameplay.gif)
+
+
